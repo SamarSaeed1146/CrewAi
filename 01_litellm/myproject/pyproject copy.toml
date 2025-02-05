@@ -12,7 +12,7 @@ dependencies = [
 ]
 
 [project.scripts]
-gemini = "myproject.hello:gemini"
+gemini = "myproject:hello.gemini"
 
 [build-system]
 requires = ["hatchling"]
