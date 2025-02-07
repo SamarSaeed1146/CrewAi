@@ -1,20 +1,223 @@
-## CrewAI Introduction
+## A Comprehensive Tutorial on Python Decorators
 
-CrewAI is an open-source Python framework designed to orchestrate autonomous AI agents, enabling them to collaborate effectively to accomplish complex tasks. By assigning specific roles, goals, and tools to each agent, CrewAI facilitates structured interactions and decision-making processes within AI-driven systems.
+Python decorators are a powerful and elegant feature that allows developers to modify the behavior of a function or a class method without altering its source code. Decorators are widely used in frameworks like CrewAI to enable extensibility, making them an essential concept to master.
 
-[Intro Docs](https://docs.crewai.com/introduction)
 
-Core Components and Concepts:
+### 1. Understanding the Basics of Python Decorators
 
-1. Agents: In CrewAI, an agent is an autonomous unit with a defined role and goal. Agents can perform specific tasks, make decisions, utilize tools, communicate with other agents, maintain memory of interactions, and delegate tasks when permitted. For example, a 'Researcher' agent might specialize in gathering information, while a 'Writer' agent focuses on content creation.
+#### What is a Decorator?
 
-2. Tasks: Tasks are individual assignments designated to agents. Each task has a clear objective and may require specific tools. Tasks feed into larger processes and produce actionable results, contributing to the overall workflow.
+A decorator is a callable (usually a function) that takes another function as an argument, modifies or extends its behavior, and returns the modified function.
 
-3. Tools: Tools are capabilities or functions that agents can utilize to perform various actions. This includes tools from the CrewAI Toolkit and LangChain Tools, enabling everything from simple searches to complex interactions and effective teamwork among agents.
+#### Why Use Decorators?
 
-4. Crews: A crew represents a collaborative group of agents working together to achieve a set of tasks. Each crew defines the strategy for task execution, agent collaboration, and the overall workflow. Crews manage AI agent teams, oversee workflows, ensure collaboration, and deliver outcomes.
+* Code reusability.
+* Separation of concerns.
+* Clean and maintainable code.
 
-5. Flows: Flows allow developers to create structured, event-driven workflows by combining and coordinating coding tasks and crews efficiently. They provide a robust framework for building sophisticated AI automations, managing state, and controlling the flow of execution in AI applications.
+#### Syntax of a Decorator
 
-6. Processes: Processes orchestrate the execution of tasks by agents, akin to project management in human teams. These processes ensure tasks are distributed and executed efficiently, in alignment with a predefined strategy.
+Using the @decorator_name syntax:
 
+```
+@decorator_name
+def my_function():
+    pass
+```
+
+This is equivalent to:
+
+```
+def my_function():
+    pass
+
+my_function = decorator_name(my_function)
+```
+
+### 2. Creating Your First Decorator
+
+Let’s start with a simple example:
+
+#### Example: Logging Decorator
+
+```
+def log_decorator(func):
+    def wrapper(*args, **kwargs):
+        print(f"Calling function: {func.__name__}")
+        result = func(*args, **kwargs)
+        print(f"Function {func.__name__} finished execution")
+        return result
+    return wrapper
+
+@log_decorator
+def say_hello(name):
+    print(f"Hello, {name}!")
+
+say_hello("Alice")
+```
+
+Output:
+
+```
+Calling function: say_hello
+Hello, Alice!
+Function say_hello finished execution
+```
+
+### 3. Decorators with Arguments
+
+To create a decorator that accepts arguments, you need to nest functions further.
+
+#### Example: Repeat Function Calls
+
+```
+def repeat(num_times):
+    def decorator(func):
+        def wrapper(*args, **kwargs):
+            for _ in range(num_times):
+                func(*args, **kwargs)
+        return wrapper
+    return decorator
+
+@repeat(3)
+def greet(name):
+    print(f"Hi {name}!")
+
+greet("Bob")
+```
+
+Output:
+
+```
+Hi Bob!
+Hi Bob!
+Hi Bob!
+```
+
+### 4. Using functools.wraps
+
+When using decorators, metadata like the name and docstring of the original function may be lost. To preserve this information, use functools.wraps.
+
+#### Example: Preserving Metadata
+
+```
+from functools import wraps
+
+def log_decorator(func):
+    @wraps(func)
+    def wrapper(*args, **kwargs):
+        print(f"Calling {func.__name__}")
+        return func(*args, **kwargs)
+    return wrapper
+
+@log_decorator
+def add(a, b):
+    """Adds two numbers."""
+    return a + b
+
+print(add.__name__)  # Output: add
+print(add.__doc__)   # Output: Adds two numbers.
+```
+
+### 5. Chaining Multiple Decorators
+
+You can stack multiple decorators on a single function by applying them one after the other.
+
+#### Example: Stacking Decorators
+
+```
+def uppercase_decorator(func):
+    def wrapper(*args, **kwargs):
+        result = func(*args, **kwargs)
+        return result.upper()
+    return wrapper
+
+def exclamation_decorator(func):
+    def wrapper(*args, **kwargs):
+        result = func(*args, **kwargs)
+        return result + "!"
+    return wrapper
+
+@uppercase_decorator
+@exclamation_decorator
+def greet():
+    return "hello"
+
+print(greet())  # Output: HELLO!
+```
+
+### 6. Class-Based Decorators
+
+You can also define decorators as classes by implementing the __call__ method.
+
+#### Example: Class-Based Logging Decorator
+
+```
+class LogDecorator:
+    def __init__(self, func):
+        self.func = func
+
+    def __call__(self, *args, **kwargs):
+        print(f"Calling {self.func.__name__}")
+        result = self.func(*args, **kwargs)
+        print(f"{self.func.__name__} finished execution")
+        return result
+
+@LogDecorator
+def say_hello(name):
+    print(f"Hello, {name}!")
+
+say_hello("Alice")
+```
+
+### 7. Real-World Examples of Decorators
+
+#### 7.1 Authentication Decorator
+
+```
+def require_authentication(func):
+    def wrapper(user, *args, **kwargs):
+        if not user.get("authenticated", False):
+            raise PermissionError("User is not authenticated")
+        return func(user, *args, **kwargs)
+    return wrapper
+
+@require_authentication
+def view_profile(user):
+    print(f"User profile: {user['name']}")
+
+user = {"name": "Alice", "authenticated": True}
+view_profile(user)
+```
+
+#### 7.2 Timing Decorator
+
+```
+import time
+
+def timing_decorator(func):
+    def wrapper(*args, **kwargs):
+        start_time = time.time()
+        result = func(*args, **kwargs)
+        end_time = time.time()
+        print(f"Execution time: {end_time - start_time:.2f} seconds")
+        return result
+    return wrapper
+
+@timing_decorator
+def slow_function():
+    time.sleep(2)
+    print("Finished")
+
+slow_function()
+```
+
+### 8. Tips and Best Practices
+
+1. Use functools.wraps to retain metadata of the original function.
+2. Keep Decorators Modular: Design them to perform a single responsibility.
+3. Document Decorators: Clearly describe what your decorator does and its intended use.
+4. Test Thoroughly: Ensure that your decorator works with various types of functions and arguments.
+
+
+By mastering Python decorators, you can write elegant, reusable, and highly extensible code. Frameworks like CrewAI leverage decorators to enable seamless extensibility and modularity, making them a cornerstone of modern Python development. Go ahead and experiment with creating your own decorators—the possibilities are endless!
