@@ -219,5 +219,6 @@ slow_function()
 3. Document Decorators: Clearly describe what your decorator does and its intended use.
 4. Test Thoroughly: Ensure that your decorator works with various types of functions and arguments.
 
+---
 
 By mastering Python decorators, you can write elegant, reusable, and highly extensible code. Frameworks like CrewAI leverage decorators to enable seamless extensibility and modularity, making them a cornerstone of modern Python development. Go ahead and experiment with creating your own decorators—the possibilities are endless!
