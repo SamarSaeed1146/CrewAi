@@ -1,21 +1,21 @@
-## A Comprehensive Tutorial on Python Decorators
+# A Comprehensive Tutorial on Python Decorators
 
 Python decorators are a powerful and elegant feature that allows developers to modify the behavior of a function or a class method without altering its source code. Decorators are widely used in frameworks like CrewAI to enable extensibility, making them an essential concept to master.
 
 
-### 1. Understanding the Basics of Python Decorators
+## 1. Understanding the Basics of Python Decorators
 
-#### What is a Decorator?
+### What is a Decorator?
 
 A decorator is a callable (usually a function) that takes another function as an argument, modifies or extends its behavior, and returns the modified function.
 
-#### Why Use Decorators?
+### Why Use Decorators?
 
 * Code reusability.
 * Separation of concerns.
 * Clean and maintainable code.
 
-#### Syntax of a Decorator
+### Syntax of a Decorator
 
 Using the @decorator_name syntax:
 
@@ -34,11 +34,11 @@ def my_function():
 my_function = decorator_name(my_function)
 ```
 
-### 2. Creating Your First Decorator
+## 2. Creating Your First Decorator
 
 Let’s start with a simple example:
 
-#### Example: Logging Decorator
+### Example: Logging Decorator
 
 ```
 def log_decorator(func):
@@ -64,11 +64,11 @@ Hello, Alice!
 Function say_hello finished execution
 ```
 
-### 3. Decorators with Arguments
+## 3. Decorators with Arguments
 
 To create a decorator that accepts arguments, you need to nest functions further.
 
-#### Example: Repeat Function Calls
+### Example: Repeat Function Calls
 
 ```
 def repeat(num_times):
@@ -94,11 +94,11 @@ Hi Bob!
 Hi Bob!
 ```
 
-### 4. Using functools.wraps
+## 4. Using functools.wraps
 
 When using decorators, metadata like the name and docstring of the original function may be lost. To preserve this information, use functools.wraps.
 
-#### Example: Preserving Metadata
+### Example: Preserving Metadata
 
 ```
 from functools import wraps
@@ -119,11 +119,11 @@ print(add.__name__)  # Output: add
 print(add.__doc__)   # Output: Adds two numbers.
 ```
 
-### 5. Chaining Multiple Decorators
+## 5. Chaining Multiple Decorators
 
 You can stack multiple decorators on a single function by applying them one after the other.
 
-#### Example: Stacking Decorators
+### Example: Stacking Decorators
 
 ```
 def uppercase_decorator(func):
@@ -146,11 +146,11 @@ def greet():
 print(greet())  # Output: HELLO!
 ```
 
-### 6. Class-Based Decorators
+## 6. Class-Based Decorators
 
 You can also define decorators as classes by implementing the __call__ method.
 
-#### Example: Class-Based Logging Decorator
+### Example: Class-Based Logging Decorator
 
 ```
 class LogDecorator:
@@ -170,9 +170,9 @@ def say_hello(name):
 say_hello("Alice")
 ```
 
-### 7. Real-World Examples of Decorators
+## 7. Real-World Examples of Decorators
 
-#### 7.1 Authentication Decorator
+### 7.1 Authentication Decorator
 
 ```
 def require_authentication(func):
@@ -190,7 +190,7 @@ user = {"name": "Alice", "authenticated": True}
 view_profile(user)
 ```
 
-#### 7.2 Timing Decorator
+### 7.2 Timing Decorator
 
 ```
 import time
@@ -212,7 +212,7 @@ def slow_function():
 slow_function()
 ```
 
-### 8. Tips and Best Practices
+## 8. Tips and Best Practices
 
 1. Use functools.wraps to retain metadata of the original function.
 2. Keep Decorators Modular: Design them to perform a single responsibility.
