@@ -14,6 +14,8 @@ dependencies = [
 
 [project.scripts]
 myproject = "myproject:main"
+say_hello = "myproject.say_hello:say_hello_cli"
+say_hello2 = "myproject.say_hello:say_hello_cli2"
 
 [build-system]
 requires = ["hatchling"]
